@@ -1,0 +1,88 @@
+{
+  {
+    "definitions": {
+      "GeoPosition": {
+        "type": "object",
+        "properties": {
+          "lat": {
+            "type": "number"
+          },
+          "lon": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "lat",
+          "lon"
+        ]
+      }
+    },
+    "type": "object",
+    "properties": {
+      "firstName": {
+        "description": "Author First Name",
+        "type": "string"
+      },
+      "lastName": {
+        "description": "Author Last Name",
+        "type": "string"
+      },
+      "stateOrRegion": {
+        "description": "Author State or Region",
+        "type": "string"
+      },
+      "emailAddress": {
+        "description": "E-mail address",
+        "type": "string",
+        "format": "email"
+      },
+      "tagOrBio": {
+        "description": "Tagline or bio",
+        "type": "string"
+      },
+      "webSite": {
+        "description": "Author Web Site",
+        "type": "string",
+        "format": "uri"
+      },
+      "feedUris": {
+        "description": "Feed URIs",
+        "type": "array",
+        "items": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        }
+      },
+      "twitterHandle": {
+        "description": "Author Twitter Handle",
+        "type": "string"
+      },
+      "gravatarHash": {
+        "description": "Author Gravatar Hash",
+        "type": "string"
+      },
+      "githubHandle": {
+        "description": "Author GitHub Handle",
+        "type": "string"
+      },
+      "position": {
+        "description": "Author GeoPosition",
+        "$ref": "#/definitions/GeoPosition"
+      },
+      "languageCode": {
+        "description": "Feed Language Code. ISO 639-1 format.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "emailAddress",
+      "webSite",
+      "feedUris",
+      "githubHandle",
+      "languageCode"
+    ]
+  }
+}
