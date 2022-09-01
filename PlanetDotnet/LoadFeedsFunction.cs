@@ -1,23 +1,23 @@
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Logging;
+using PlanetDotnet.Infrastructure;
+using PlanetDotnetAuthors;
 using System;
 using System.IO;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using System.Xml;
-using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Logging;
-using PlanetXamarin.Infrastructure;
-using PlanetXamarinAuthors;
 
-namespace PlanetXamarin
+namespace PlanetDotnet
 {
     public static class LoadFeedsFunction
     {
         [FunctionName("LoadFeedsFunction")]
         public static async Task Run(
-            [TimerTrigger("0 0 */1 * * *", RunOnStartup = true)]TimerInfo myTimer,
+            [TimerTrigger("0 0 */1 * * *", RunOnStartup = true)] TimerInfo myTimer,
             ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");

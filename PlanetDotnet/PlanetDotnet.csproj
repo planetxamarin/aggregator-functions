@@ -10,7 +10,7 @@
     <PackageReference Include="System.ServiceModel.Syndication" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PlanetXamarinAuthors\PlanetXamarinAuthors.csproj" />
+    <ProjectReference Include="..\PlanetDotnetAuthors\PlanetDotnetAuthors.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

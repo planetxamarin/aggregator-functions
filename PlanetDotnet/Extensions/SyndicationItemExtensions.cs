@@ -1,7 +1,7 @@
 using System.Linq;
 using System.ServiceModel.Syndication;
 
-namespace PlanetXamarin.Extensions
+namespace PlanetDotnet.Extensions
 {
     public static class SyndicationItemExtensions
     {
@@ -34,15 +34,15 @@ namespace PlanetXamarin.Extensions
             return hasXamarinTitle || hasXamarinCategory || hasXamarinKeywords;
         }
 
-		public static string ToHtml(this SyndicationContent content)
-		{
-			var textSyndicationContent = content as TextSyndicationContent;
-			if (textSyndicationContent != null)
-			{
-				return textSyndicationContent.Text;
-			}
+        public static string ToHtml(this SyndicationContent content)
+        {
+            var textSyndicationContent = content as TextSyndicationContent;
+            if (textSyndicationContent != null)
+            {
+                return textSyndicationContent.Text;
+            }
 
-			return content.ToString();
-		}
-	}
+            return content.ToString();
+        }
+    }
 }

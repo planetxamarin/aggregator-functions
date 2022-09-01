@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace PlanetXamarinAuthors.Models
+namespace PlanetDotnetAuthors.Models
 {
     public class GeoPosition
     {

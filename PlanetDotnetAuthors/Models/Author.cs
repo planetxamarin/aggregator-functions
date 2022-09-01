@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace PlanetXamarinAuthors.Models
+namespace PlanetDotnetAuthors.Models
 {
     public class Author
     {
