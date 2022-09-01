@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlanetXamarin", "PlanetXamarin\PlanetXamarin.csproj", "{591E633A-5665-4D84-B4B6-02B627699AC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8FA44784-F2C3-4749-9272-38F4D8EA9398}"
+	ProjectSection(SolutionItems) = preProject
+		author-schema.json = author-schema.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanetXamarinAuthors", "PlanetXamarinAuthors\PlanetXamarinAuthors.csproj", "{57C40CD9-62CF-48D2-9A5E-C4CDD1CE6082}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{591E633A-5665-4D84-B4B6-02B627699AC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{591E633A-5665-4D84-B4B6-02B627699AC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{591E633A-5665-4D84-B4B6-02B627699AC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{591E633A-5665-4D84-B4B6-02B627699AC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57C40CD9-62CF-48D2-9A5E-C4CDD1CE6082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57C40CD9-62CF-48D2-9A5E-C4CDD1CE6082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57C40CD9-62CF-48D2-9A5E-C4CDD1CE6082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57C40CD9-62CF-48D2-9A5E-C4CDD1CE6082}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E14EAD9A-3E05-4B45-AFB6-E3E98BB88660}
+	EndGlobalSection
+EndGlobal
