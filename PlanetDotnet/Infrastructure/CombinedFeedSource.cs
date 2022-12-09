@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
-using PlanetXamarin.Extensions;
-using PlanetXamarinAuthors.Models;
+using PlanetDotnet.Extensions;
+using PlanetDotnetAuthors.Models;
 using Polly;
 using Polly.Retry;
 using System;
@@ -13,7 +13,7 @@ using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace PlanetXamarin.Infrastructure
+namespace PlanetDotnet.Infrastructure
 {
     public class CombinedFeedSource
     {
@@ -58,7 +58,7 @@ namespace PlanetXamarin.Infrastructure
             {
                 _httpClient = new HttpClient();
                 _httpClient.DefaultRequestHeaders.UserAgent.Add(
-                    new ProductInfoHeaderValue("PlanetXamarin", $"{GetType().Assembly.GetName().Version}"));
+                    new ProductInfoHeaderValue("PlanetDotnet", $"{GetType().Assembly.GetName().Version}"));
                 _httpClient.Timeout = TimeSpan.FromSeconds(15);
 
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
@@ -154,7 +154,7 @@ namespace PlanetXamarin.Infrastructure
                 .WithData("HttpStatusCode", (int)response.StatusCode);
         }
 
-        private SyndicationFeed GetCombinedFeed(IEnumerable<SyndicationItem> items, string languageCode, 
+        private SyndicationFeed GetCombinedFeed(IEnumerable<SyndicationItem> items, string languageCode,
             IEnumerable<Author> tamarins, int? numberOfItems)
         {
             DateTimeOffset GetMaxTime(SyndicationItem item)
@@ -179,7 +179,7 @@ namespace PlanetXamarin.Infrastructure
                 LastUpdatedTime = DateTimeOffset.UtcNow
             };
 
-            foreach(var tamarin in tamarins)
+            foreach (var tamarin in tamarins)
             {
                 feed.Contributors.Add(new SyndicationPerson(
                     tamarin.EmailAddress, $"{tamarin.FirstName} {tamarin.LastName}", tamarin.WebSite.ToString()));
@@ -191,12 +191,12 @@ namespace PlanetXamarin.Infrastructure
 
     public class FeedReadFailedException : Exception
     {
-        public FeedReadFailedException(string message) 
+        public FeedReadFailedException(string message)
             : base(message)
         {
         }
 
-        public FeedReadFailedException(string message, Exception inner) 
+        public FeedReadFailedException(string message, Exception inner)
             : base(message, inner)
         {
         }

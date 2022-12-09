@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using PlanetXamarinAuthors.Models;
+using PlanetDotnetAuthors.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace PlanetXamarinAuthors
+namespace PlanetDotnetAuthors
 {
     public static class AuthorsLoader
     {
@@ -16,7 +16,7 @@ namespace PlanetXamarinAuthors
             var assembly = Assembly.GetExecutingAssembly();
             var resourceNames = assembly.GetManifestResourceNames();
             var authorsResourceNames = resourceNames.Where(res =>
-                res.StartsWith("PlanetXamarinAuthors", StringComparison.OrdinalIgnoreCase) &&
+                res.StartsWith("PlanetDotnetAuthors", StringComparison.OrdinalIgnoreCase) &&
                 res.EndsWith(".json", StringComparison.OrdinalIgnoreCase));
 
             var authorsTasks = authorsResourceNames.Select(name => ReadAuthor(assembly, name));
