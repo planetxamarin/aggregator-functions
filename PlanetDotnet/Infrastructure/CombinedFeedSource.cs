@@ -1,8 +1,3 @@
-using Microsoft.Extensions.Logging;
-using PlanetDotnet.Extensions;
-using PlanetDotnetAuthors.Models;
-using Polly;
-using Polly.Retry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +7,11 @@ using System.Net.Http.Headers;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using System.Xml;
+using Microsoft.Extensions.Logging;
+using PlanetDotnet.Extensions;
+using PlanetDotnetAuthors.Models;
+using Polly;
+using Polly.Retry;
 
 namespace PlanetDotnet.Infrastructure
 {

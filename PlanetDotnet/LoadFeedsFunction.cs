@@ -1,15 +1,15 @@
-using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Logging;
-using PlanetDotnet.Infrastructure;
-using PlanetDotnetAuthors;
 using System;
 using System.IO;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using System.Xml;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Logging;
+using PlanetDotnet.Infrastructure;
+using PlanetDotnetAuthors;
 
 namespace PlanetDotnet
 {

@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
-using PlanetDotnetAuthors.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using PlanetDotnetAuthors.Models;
 
 namespace PlanetDotnetAuthors
 {
