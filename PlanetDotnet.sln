@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanetDotnet", "PlanetDotne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanetDotnet.Tests.Unit", "PlanetDotnet.Tests.Unit\PlanetDotnet.Tests.Unit.csproj", "{ED070F5D-3C55-4E8F-B23A-381E09931D1C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanetDotnet.Authors", "PlanetDotnet.Authors\PlanetDotnet.Authors.csproj", "{0518A91D-95CA-4C21-BACF-E1E7E56D8754}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{ED070F5D-3C55-4E8F-B23A-381E09931D1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED070F5D-3C55-4E8F-B23A-381E09931D1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED070F5D-3C55-4E8F-B23A-381E09931D1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0518A91D-95CA-4C21-BACF-E1E7E56D8754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0518A91D-95CA-4C21-BACF-E1E7E56D8754}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0518A91D-95CA-4C21-BACF-E1E7E56D8754}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0518A91D-95CA-4C21-BACF-E1E7E56D8754}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
