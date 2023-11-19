@@ -4,13 +4,14 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
-using System.ServiceModel.Syndication;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using PlanetDotnet.Authors.Models.Authors;
 
-namespace PlanetDotnet.Brokers.Feeds
+namespace PlanetDotnet.Brokers.Authors
 {
-    public interface IFeedBroker
+    public interface IAuthorBroker
     {
-        ValueTask<SyndicationFeed> ReadFeedAsync(string feedUri);
+        ValueTask<IEnumerable<Author>> GetAllAuthorsAsync();
     }
 }
