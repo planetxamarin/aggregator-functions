@@ -11,7 +11,8 @@ namespace PlanetDotnet.Services.Feeds
 {
     public interface IFeedService
     {
-        ValueTask<SyndicationFeed> CombineFeedsAsync();
-        ValueTask<SyndicationFeed> CombineFeedsAsync();
+        ValueTask<SyndicationFeed> GetMixedFeedAsync();
+        ValueTask LoadFeedAsync();
+        ValueTask<SyndicationFeed> RetrieveFeedAsync(string language); 
     }
 }

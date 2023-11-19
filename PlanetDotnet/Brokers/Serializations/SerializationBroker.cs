@@ -4,6 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
+using System;
 using System.IO;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
@@ -13,9 +14,17 @@ namespace PlanetDotnet.Brokers.Serializations
 {
     internal class SerializationBroker : ISerializationBroker
     {
-        public ValueTask<SyndicationFeed> DeserializeFeedAsync(Stream feedStream)
+        public SyndicationFeed DeserializeFeed(Stream feedStream)
         {
-            throw new System.NotImplementedException();
+            feedStream.Position = 0;
+            using var xmlReader = XmlReader.Create(feedStream, new XmlReaderSettings
+            {
+                Async = true
+            });
+
+            var feed = SyndicationFeed.Load(xmlReader);
+
+            return feed;
         }
 
         public async ValueTask<Stream> SerializeFeedAsync(SyndicationFeed feed)

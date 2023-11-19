@@ -5,14 +5,13 @@
 // ---------------------------------------------------------------
 
 using System.IO;
-using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 
-namespace PlanetDotnet.Brokers.Serializations
+namespace PlanetDotnet.Brokers.Storages
 {
-    public interface ISerializationBroker
+    public interface IStorageBroker
     {
-        ValueTask<Stream> SerializeFeedAsync(SyndicationFeed feed);
-        SyndicationFeed DeserializeFeed(Stream feedStream);
+        ValueTask UploadBlobAsync(string language, Stream content);
+        ValueTask<Stream> ReadBlobAsync(string language);
     }
 }
