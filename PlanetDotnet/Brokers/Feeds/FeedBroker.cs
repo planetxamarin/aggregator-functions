@@ -18,11 +18,17 @@ namespace PlanetDotnet.Brokers.Feeds
         public FeedBroker(HttpClient httpClient) =>
             this.httpClient = httpClient;
 
-        public async ValueTask<SyndicationFeed> ReadFeedAsync(string feedUri)
+        public async Task<SyndicationFeed> ReadFeedAsync(string feedUri)
         {
             var response = await httpClient.GetAsync(feedUri).ConfigureAwait(false);
             using var feedStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            using var reader = XmlReader.Create(feedStream);
+
+            var settings = new XmlReaderSettings
+            {
+                DtdProcessing = DtdProcessing.Parse
+            };
+
+            using var reader = XmlReader.Create(feedStream, settings);
             var feed = SyndicationFeed.Load(reader);
 
             return feed;

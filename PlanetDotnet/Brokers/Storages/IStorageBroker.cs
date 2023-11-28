@@ -11,6 +11,7 @@ namespace PlanetDotnet.Brokers.Storages
 {
     public interface IStorageBroker
     {
+        ValueTask InitializeAsync();
         ValueTask UploadBlobAsync(string language, Stream content);
         ValueTask<Stream> ReadBlobAsync(string language);
     }

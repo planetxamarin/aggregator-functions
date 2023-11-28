@@ -1,3 +1,9 @@
+// ---------------------------------------------------------------
+// Copyright (c) 2023 Planet Dotnet. All rights reserved.
+// Licensed under the MIT License.
+// See License.txt in the project root for license information.
+// ---------------------------------------------------------------
+
 using System;
 using Microsoft.Extensions.Logging;
 
@@ -24,6 +30,9 @@ namespace PlanetDotnet.Brokers.Loggings
 
         public void LogError(Exception exception) =>
             this.logger.LogError(exception.Message, exception);
+
+        public void LogError(Exception exception, string message) =>
+            this.logger.LogError(exception, message);
 
         public void LogCritical(Exception exception) =>
             this.logger.LogCritical(exception, exception.Message);

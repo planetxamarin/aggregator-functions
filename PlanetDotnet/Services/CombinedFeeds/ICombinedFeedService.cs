@@ -7,12 +7,10 @@
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 
-namespace PlanetDotnet.Services.Feeds
+namespace PlanetDotnet.Services.CombinedFeeds
 {
-    public interface IFeedService
+    public interface ICombinedFeedService
     {
-        ValueTask<SyndicationFeed> GetMixedFeedAsync();
-        ValueTask LoadFeedAsync();
-        ValueTask<SyndicationFeed> RetrieveFeedAsync(string language); 
+        Task<SyndicationFeed> LoadFeed(int? numberOfItems, string languageCode = "mixed");
     }
 }

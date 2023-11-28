@@ -11,6 +11,6 @@ namespace PlanetDotnet.Brokers.Feeds
 {
     public interface IFeedBroker
     {
-        ValueTask<SyndicationFeed> ReadFeedAsync(string feedUri);
+        Task<SyndicationFeed> ReadFeedAsync(string feedUri);
     }
 }

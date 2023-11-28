@@ -7,9 +7,9 @@
         "excludedTypes": "Request"
       },
       "enableLiveMetricsFilters": true
+    },
+    "logLevel": {
+      "PlanetDotnet.Brokers.Loggings.LoggingBroker": "Information"
     }
-  },
-  "logLevel": {
-    "PlanetDotnet.Brokers.Loggings.LoggingBroker": "Information"
   }
 }

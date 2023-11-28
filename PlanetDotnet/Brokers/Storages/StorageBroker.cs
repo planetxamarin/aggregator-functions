@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 
 namespace PlanetDotnet.Brokers.Storages
 {
@@ -16,7 +17,7 @@ namespace PlanetDotnet.Brokers.Storages
         private readonly BlobContainerClient blobContainerClient;
         private const string BlobContainerName = "feeds";
         private const string FeedBlobStorageKey = "FeedBlobStorage";
-        private const string BlobName = "newfeed.{0}.rss";
+        private const string BlobName = "feed.{0}.rss";
 
         public StorageBroker()
         {
@@ -27,6 +28,12 @@ namespace PlanetDotnet.Brokers.Storages
             this.blobContainerClient = new BlobContainerClient(
                 connectionString: blobConnectString,
                 blobContainerName: BlobContainerName);
+        }
+
+        public async ValueTask InitializeAsync()
+        {
+            await this.blobContainerClient.CreateIfNotExistsAsync();
+            await this.blobContainerClient.SetAccessPolicyAsync(PublicAccessType.Blob);
         }
 
         public async ValueTask UploadBlobAsync(string language, Stream content)
