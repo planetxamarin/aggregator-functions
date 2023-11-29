@@ -6,15 +6,20 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Web.Http;
 using Moq;
+using Newtonsoft.Json;
 using PlanetDotnet.Authors.Models.Authors;
 using PlanetDotnet.Brokers.Authors;
 using PlanetDotnet.Brokers.Loggings;
 using PlanetDotnet.Services.Foundations.Authors;
 using Tynamix.ObjectFiller;
+using Xunit;
 
 namespace PlanetDotnet.Tests.Unit.Services.Foundations.Authors
 {
@@ -50,5 +55,62 @@ namespace PlanetDotnet.Tests.Unit.Services.Foundations.Authors
 
         private static TargetInvocationException GetTargetInvocationException() =>
             (TargetInvocationException)FormatterServices.GetUninitializedObject(typeof(TargetInvocationException));
+
+        private static Exception GetException() =>
+            (Exception)FormatterServices.GetUninitializedObject(typeof(Exception));
+
+        private static string GetRandomString() => new MnemonicString().GetValue();
+
+        public static TheoryData DependencyExceptions()
+        {
+            string exceptionMessage = GetRandomString();
+
+            var exception = new Exception(exceptionMessage);
+
+            var targetInvocationException =
+                new TargetInvocationException(exception);
+
+            var argumentNullException =
+                new ArgumentNullException();
+
+            var invalidOperationException =
+                new InvalidOperationException(exceptionMessage);
+
+            var aggregateException =
+                new AggregateException();
+
+            var operationCanceledException =
+                new OperationCanceledException();
+
+            var fileNotFoundException =
+                new FileNotFoundException(exceptionMessage);
+
+            var directoryNotFoundException =
+                new DirectoryNotFoundException(exceptionMessage);
+
+            var ioException =
+                new IOException(exceptionMessage);
+
+            var jsonSerializationException =
+                new JsonSerializationException();
+
+            var jsonReaderException =
+                new JsonReaderException();
+
+
+            return new TheoryData<Exception>
+            {
+                targetInvocationException,
+                argumentNullException,
+                invalidOperationException,
+                aggregateException,
+                operationCanceledException,
+                fileNotFoundException,
+                directoryNotFoundException,
+                ioException,
+                jsonSerializationException,
+                jsonReaderException
+            };
+        }
     }
 }
