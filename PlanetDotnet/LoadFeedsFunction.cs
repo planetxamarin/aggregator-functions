@@ -19,10 +19,7 @@ namespace PlanetDotnet
 {
     public class LoadFeedsFunction
     {
-        private readonly IFeedService feedService;
-        private readonly IStorageBroker storageBroker;
-        private readonly IAuthorBroker authorBroker;
-        private readonly ISerializationBroker serializationBroker;
+        
 
         public LoadFeedsFunction(
             IFeedService feedService,
@@ -45,31 +42,7 @@ namespace PlanetDotnet
 
             try
             {
-                await this.storageBroker.InitializeAsync();
-
-                var authors = await this.authorBroker.GetAllAuthorsAsync();
-
-                var languages = authors.Select(author => author.FeedLanguageCode).Distinct().ToList();
-
-                var mainCulture = CultureInfo.CurrentCulture;
-
-                foreach (var language in languages)
-                {
-                    try
-                    {
-                        CultureInfo.CurrentCulture = new CultureInfo(language);
-                        log.LogInformation($"Loading {language} combined author feed");
-                        var feed = await feedService.LoadFeedAsync(null, language);
-                        using var stream = await this.serializationBroker.SerializeFeedAsync(feed);
-                        await this.storageBroker.UploadBlobAsync(language, stream);
-                    }
-                    catch (Exception ex)
-                    {
-                        log.LogError(ex, "error");
-                    }
-                }
-
-                CultureInfo.CurrentCulture = mainCulture;
+                
             }
             catch (Exception ex)
             {

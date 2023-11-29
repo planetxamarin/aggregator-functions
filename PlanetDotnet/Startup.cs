@@ -14,6 +14,7 @@ using PlanetDotnet.Brokers.Loggings;
 using PlanetDotnet.Brokers.Serializations;
 using PlanetDotnet.Brokers.Storages;
 using PlanetDotnet.Services.Foundations.Feeds;
+using PlanetDotnet.Services.Processings.Feeds;
 
 [assembly: FunctionsStartup(typeof(PlanetDotnet.Startup))]
 namespace PlanetDotnet
@@ -31,6 +32,7 @@ namespace PlanetDotnet
             builder.Services.AddScoped<IAuthorBroker, AuthorBroker>();
             builder.Services.AddScoped<IFeedBroker, FeedBroker>();
             builder.Services.AddScoped<IFeedService, FeedService>();
+            builder.Services.AddScoped<IFeedProcessingService, FeedProcessingService>();
         }
     }
 }
