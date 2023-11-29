@@ -5,25 +5,46 @@
 // ---------------------------------------------------------------
 
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
+using PlanetDotnet.Brokers.Loggings;
+using PlanetDotnet.Services.Foundations.Authors;
 
 namespace PlanetDotnet.Functions
 {
-    public static class AuthorFunctions
+    public class AuthorFunctions
     {
-        [FunctionName("AuthorFunctions")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "authors")] HttpRequest req,
-            ILogger log)
+        private readonly ILoggingBroker loggingBroker;
+        private readonly IAuthorService authorService;
+
+        public AuthorFunctions(
+            ILoggingBroker loggingBroker,
+            IAuthorService authorService)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            this.loggingBroker = loggingBroker;
+            this.authorService = authorService;
+        }
 
+        [FunctionName("GetAllAuthors")]
+        public async Task<IActionResult> GetAllAuthorsAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "authors")] HttpRequest req)
+        {
+            try
+            {
+                this.loggingBroker.LogInformation("Started loading all authors.");
 
-            return new OkObjectResult("");
+                var authors = await this.authorService.RetrieveAllAuthorsAsync();
+
+                this.loggingBroker.LogInformation("Finished loading all authors.");
+                return new OkObjectResult(authors);
+            }
+            catch
+            {
+                return new InternalServerErrorResult();
+            }
         }
     }
 }
