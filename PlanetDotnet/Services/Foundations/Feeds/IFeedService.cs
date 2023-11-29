@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace PlanetDotnet.Services.Foundations.Feeds
 {
-    public interface ICombinedFeedService
+    public interface IFeedService
     {
-        Task<SyndicationFeed> LoadFeed(int? numberOfItems, string languageCode = "mixed");
+        Task<SyndicationFeed> LoadFeedAsync(int? numberOfItems, string languageCode = "mixed");
     }
 }

@@ -30,7 +30,7 @@ namespace PlanetDotnet
             builder.Services.AddScoped<IStorageBroker, StorageBroker>();
             builder.Services.AddScoped<IAuthorBroker, AuthorBroker>();
             builder.Services.AddScoped<IFeedBroker, FeedBroker>();
-            builder.Services.AddScoped<ICombinedFeedService, CombinedFeedService>();
+            builder.Services.AddScoped<IFeedService, FeedService>();
         }
     }
 }

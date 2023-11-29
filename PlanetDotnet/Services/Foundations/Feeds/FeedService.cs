@@ -24,7 +24,7 @@ using Polly.Retry;
 
 namespace PlanetDotnet.Services.Foundations.Feeds
 {
-    public class CombinedFeedService : ICombinedFeedService
+    public class FeedService : IFeedService
     {
         private readonly HttpClient httpClient;
         private readonly AsyncRetryPolicy _retryPolicy;
@@ -37,7 +37,7 @@ namespace PlanetDotnet.Services.Foundations.Feeds
         private const string RssFeedUrlKey = "RssFeedUrl";
         private const string RssFeedImageUrlKey = "RssFeedImageUrl";
 
-        public CombinedFeedService(
+        public FeedService(
             IAuthorBroker authorBroker,
             ILoggingBroker loggingBroker,
             IFeedBroker feedBroker,
@@ -54,7 +54,7 @@ namespace PlanetDotnet.Services.Foundations.Feeds
             this.feedBroker = feedBroker;
         }
 
-        public async Task<SyndicationFeed> LoadFeed(int? numberOfItems, string languageCode = "mixed")
+        public async Task<SyndicationFeed> LoadFeedAsync(int? numberOfItems, string languageCode = "mixed")
         {
             var authors = await authorBroker.GetAllAuthorsAsync();
 

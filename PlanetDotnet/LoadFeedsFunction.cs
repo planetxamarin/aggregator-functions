@@ -6,14 +6,12 @@
 
 using System;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
-using System.Xml;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using PlanetDotnet.Brokers.Authors;
+using PlanetDotnet.Brokers.Serializations;
 using PlanetDotnet.Brokers.Storages;
 using PlanetDotnet.Services.Foundations.Feeds;
 
@@ -21,18 +19,21 @@ namespace PlanetDotnet
 {
     public class LoadFeedsFunction
     {
-        private readonly ICombinedFeedService feedService;
+        private readonly IFeedService feedService;
         private readonly IStorageBroker storageBroker;
         private readonly IAuthorBroker authorBroker;
+        private readonly ISerializationBroker serializationBroker;
 
         public LoadFeedsFunction(
-            ICombinedFeedService feedService,
+            IFeedService feedService,
             IStorageBroker storageBroker,
-            IAuthorBroker authorBroker)
+            IAuthorBroker authorBroker,
+            ISerializationBroker serializationBroker)
         {
             this.feedService = feedService;
             this.storageBroker = storageBroker;
             this.authorBroker = authorBroker;
+            this.serializationBroker = serializationBroker;
         }
 
         [FunctionName("LoadFeedsFunction")]
@@ -58,8 +59,8 @@ namespace PlanetDotnet
                     {
                         CultureInfo.CurrentCulture = new CultureInfo(language);
                         log.LogInformation($"Loading {language} combined author feed");
-                        var feed = await feedService.LoadFeed(null, language);
-                        using var stream = await SerializeFeed(feed);
+                        var feed = await feedService.LoadFeedAsync(null, language);
+                        using var stream = await this.serializationBroker.SerializeFeedAsync(feed);
                         await this.storageBroker.UploadBlobAsync(language, stream);
                     }
                     catch (Exception ex)
@@ -76,74 +77,5 @@ namespace PlanetDotnet
             }
             log.LogInformation($"Load feeds Finished at: {DateTime.Now}");
         }
-
-        private static async Task<Stream> SerializeFeed(SyndicationFeed feed)
-        {
-            try
-            {
-
-                var memoryStream = new MemoryStream();
-                using var xmlWriter = XmlWriter.Create(memoryStream, new XmlWriterSettings
-                {
-                    Async = true,
-                    Indent = true // Makes the output XML easier to read, optional
-                });
-
-                xmlWriter.WriteStartDocument();
-                xmlWriter.WriteStartElement("rss");
-                xmlWriter.WriteAttributeString("version", "2.0");
-
-                xmlWriter.WriteStartElement("channel");
-
-                // Write channel elements
-                xmlWriter.WriteElementString("title", feed.Title?.Text ?? string.Empty);
-                xmlWriter.WriteElementString("link", feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty);
-                xmlWriter.WriteElementString("description", feed.Description?.Text ?? string.Empty);
-
-                // Optional channel elements (add as needed)
-                if (feed.Language != null)
-                    xmlWriter.WriteElementString("language", feed.Language);
-
-                if (feed.LastUpdatedTime != DateTimeOffset.MinValue)
-                    xmlWriter.WriteElementString("lastBuildDate", feed.LastUpdatedTime.ToString("R")); // RFC-822 format
-
-                // More optional elements like image, categories, etc. can be added here
-
-                // Write items
-                foreach (var item in feed.Items)
-                {
-                    xmlWriter.WriteStartElement("item");
-
-                    xmlWriter.WriteElementString("title", item.Title?.Text ?? string.Empty);
-                    xmlWriter.WriteElementString("link", item.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty);
-                    xmlWriter.WriteElementString("description", item.Summary?.Text ?? string.Empty);
-
-                    // Other optional elements for each item (guid, pubDate, etc.)
-                    if (item.Id != null)
-                        xmlWriter.WriteElementString("guid", item.Id);
-
-                    if (item.PublishDate != DateTimeOffset.MinValue)
-                        xmlWriter.WriteElementString("pubDate", item.PublishDate.ToString("R")); // RFC-822 format
-
-                    // Additional elements for each item can be added here
-
-                    xmlWriter.WriteEndElement(); // item
-                }
-
-                xmlWriter.WriteEndElement(); // channel
-                xmlWriter.WriteEndElement(); // rss
-
-                await xmlWriter.FlushAsync();
-                memoryStream.Seek(0, SeekOrigin.Begin);
-
-                return memoryStream;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-
     }
-
 }
