@@ -1,0 +1,19 @@
+{
+  "firstName": "Mabrouk",
+  "lastName": "Mahdhi",
+  "stateOrRegion": "Darmstadt, Germany",
+  "emailAddress": "contact@mahdhi.com",
+  "tagOrBio": "is a Senior Technical Consultant who blogs, talks and develops all around mobile and web development.",
+  "webSite": "https://mahdhi.com",
+  "twitterHandle": "mabrouk_mahdhi",
+  "githubHandle": "mabroukmahdhi",
+  "gravatarHash": "1f5b179abb9b9f8a34a4a9799e205c96",
+  "feedUris": [
+    "https://medium.com/feed/@mabroukmahdhi"
+  ],
+  "position": {  
+    "lat": 49.873207,
+    "lon": 8.650779
+  },
+  "languageCode": "en"
+}
