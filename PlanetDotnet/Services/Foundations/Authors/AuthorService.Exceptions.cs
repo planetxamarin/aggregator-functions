@@ -95,6 +95,10 @@ namespace PlanetDotnet.Services.Foundations.Authors
 
                 throw CreateAndLogDependencyException(failedAuthorStorageException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private AuthorDependencyException CreateAndLogDependencyException(
@@ -106,6 +110,17 @@ namespace PlanetDotnet.Services.Foundations.Authors
             this.loggingBroker.LogCritical(authorDependencyException);
 
             return authorDependencyException;
+        }
+
+        private AuthorServiceException CreateAndLogServiceException(
+            Exception exception)
+        {
+            var studentServiceException =
+                new AuthorServiceException(exception);
+
+            this.loggingBroker.LogError(studentServiceException);
+
+            return studentServiceException;
         }
     }
 }
