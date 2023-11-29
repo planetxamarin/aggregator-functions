@@ -10,13 +10,13 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using PlanetDotnet.Services.Processings.Feeds;
 
-namespace PlanetDotnet
+namespace PlanetDotnet.Functions
 {
-    public class LoadFeedsFunction
+    public class FeedFunctions
     {
         private readonly IFeedProcessingService feedProcessingService;
 
-        public LoadFeedsFunction(IFeedProcessingService feedProcessingService) =>
+        public FeedFunctions(IFeedProcessingService feedProcessingService) =>
             this.feedProcessingService = feedProcessingService;
 
         [FunctionName("LoadFeedsFunction")]
@@ -28,7 +28,7 @@ namespace PlanetDotnet
             {
                 log.LogInformation($"Load feeds Timer trigger function executed at: {DateTime.Now}");
 
-                await this.feedProcessingService.ProcessFeedLoadingAsync();
+                await feedProcessingService.ProcessFeedLoadingAsync();
 
                 log.LogInformation($"Load feeds Finished at: {DateTime.Now}");
             }
