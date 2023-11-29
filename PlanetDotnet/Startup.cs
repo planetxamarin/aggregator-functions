@@ -13,6 +13,7 @@ using PlanetDotnet.Brokers.Feeds;
 using PlanetDotnet.Brokers.Loggings;
 using PlanetDotnet.Brokers.Serializations;
 using PlanetDotnet.Brokers.Storages;
+using PlanetDotnet.Services.Foundations.Authors;
 using PlanetDotnet.Services.Foundations.Feeds;
 using PlanetDotnet.Services.Processings.Feeds;
 
@@ -32,6 +33,7 @@ namespace PlanetDotnet
             builder.Services.AddSingleton<IAuthorBroker, AuthorBroker>();
             builder.Services.AddSingleton<IFeedBroker, FeedBroker>();
             builder.Services.AddSingleton<IFeedService, FeedService>();
+            builder.Services.AddSingleton<IAuthorService, AuthorService>();
             builder.Services.AddSingleton<IFeedProcessingService, FeedProcessingService>();
         }
     }
