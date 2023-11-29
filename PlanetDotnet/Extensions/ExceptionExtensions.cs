@@ -11,9 +11,9 @@ namespace PlanetDotnet.Extensions
     internal static class ExceptionExtensions
     {
         public static TException WithData<TException>(
-            this TException exception, 
-            string key, 
-            object value) 
+            this TException exception,
+            string key,
+            object value)
             where TException : Exception
         {
             exception.Data[key] = value;
