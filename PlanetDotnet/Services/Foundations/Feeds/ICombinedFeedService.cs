@@ -7,7 +7,7 @@
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 
-namespace PlanetDotnet.Services.CombinedFeeds
+namespace PlanetDotnet.Services.Foundations.Feeds
 {
     public interface ICombinedFeedService
     {

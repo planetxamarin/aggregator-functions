@@ -15,7 +15,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using PlanetDotnet.Brokers.Authors;
 using PlanetDotnet.Brokers.Storages;
-using PlanetDotnet.Services.CombinedFeeds;
+using PlanetDotnet.Services.Foundations.Feeds;
 
 namespace PlanetDotnet
 {
@@ -79,47 +79,68 @@ namespace PlanetDotnet
 
         private static async Task<Stream> SerializeFeed(SyndicationFeed feed)
         {
-            FixInvalidLastUpdatedTime(feed);
-
-            var memoryStream = new MemoryStream();
-            using var xmlWriter = XmlWriter.Create(memoryStream, new XmlWriterSettings
+            try
             {
-                Async = true
-            });
 
-            var rssFormatter = new Rss20FeedFormatter(feed);
-            rssFormatter.WriteTo(xmlWriter);
-            await xmlWriter.FlushAsync();
+                var memoryStream = new MemoryStream();
+                using var xmlWriter = XmlWriter.Create(memoryStream, new XmlWriterSettings
+                {
+                    Async = true,
+                    Indent = true // Makes the output XML easier to read, optional
+                });
 
-            memoryStream.Seek(0, SeekOrigin.Begin);
+                xmlWriter.WriteStartDocument();
+                xmlWriter.WriteStartElement("rss");
+                xmlWriter.WriteAttributeString("version", "2.0");
 
-            return memoryStream;
-        }
+                xmlWriter.WriteStartElement("channel");
 
-        private static void FixInvalidLastUpdatedTime(SyndicationFeed feed)
-        {
-            foreach (var item in feed.Items)
+                // Write channel elements
+                xmlWriter.WriteElementString("title", feed.Title?.Text ?? string.Empty);
+                xmlWriter.WriteElementString("link", feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty);
+                xmlWriter.WriteElementString("description", feed.Description?.Text ?? string.Empty);
+
+                // Optional channel elements (add as needed)
+                if (feed.Language != null)
+                    xmlWriter.WriteElementString("language", feed.Language);
+
+                if (feed.LastUpdatedTime != DateTimeOffset.MinValue)
+                    xmlWriter.WriteElementString("lastBuildDate", feed.LastUpdatedTime.ToString("R")); // RFC-822 format
+
+                // More optional elements like image, categories, etc. can be added here
+
+                // Write items
+                foreach (var item in feed.Items)
+                {
+                    xmlWriter.WriteStartElement("item");
+
+                    xmlWriter.WriteElementString("title", item.Title?.Text ?? string.Empty);
+                    xmlWriter.WriteElementString("link", item.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty);
+                    xmlWriter.WriteElementString("description", item.Summary?.Text ?? string.Empty);
+
+                    // Other optional elements for each item (guid, pubDate, etc.)
+                    if (item.Id != null)
+                        xmlWriter.WriteElementString("guid", item.Id);
+
+                    if (item.PublishDate != DateTimeOffset.MinValue)
+                        xmlWriter.WriteElementString("pubDate", item.PublishDate.ToString("R")); // RFC-822 format
+
+                    // Additional elements for each item can be added here
+
+                    xmlWriter.WriteEndElement(); // item
+                }
+
+                xmlWriter.WriteEndElement(); // channel
+                xmlWriter.WriteEndElement(); // rss
+
+                await xmlWriter.FlushAsync();
+                memoryStream.Seek(0, SeekOrigin.Begin);
+
+                return memoryStream;
+            }
+            catch (Exception ex)
             {
-                // Check if both PublishDate and LastUpdatedTime are invalid
-                if (item.PublishDate == DateTimeOffset.MinValue && item.LastUpdatedTime == DateTimeOffset.MinValue)
-                {
-                    item.PublishDate = DateTimeOffset.UtcNow;
-                    item.LastUpdatedTime = DateTimeOffset.UtcNow;
-                }
-                else
-                {
-                    // If only PublishDate is invalid, set it to LastUpdatedTime
-                    if (item.PublishDate == DateTimeOffset.MinValue)
-                    {
-                        item.PublishDate = item.LastUpdatedTime;
-                    }
-
-                    // If only LastUpdatedTime is invalid, set it to PublishDate
-                    if (item.LastUpdatedTime == DateTimeOffset.MinValue)
-                    {
-                        item.LastUpdatedTime = item.PublishDate;
-                    }
-                }
+                throw;
             }
         }
 

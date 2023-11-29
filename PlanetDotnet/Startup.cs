@@ -13,7 +13,7 @@ using PlanetDotnet.Brokers.Feeds;
 using PlanetDotnet.Brokers.Loggings;
 using PlanetDotnet.Brokers.Serializations;
 using PlanetDotnet.Brokers.Storages;
-using PlanetDotnet.Services.CombinedFeeds;
+using PlanetDotnet.Services.Foundations.Feeds;
 
 [assembly: FunctionsStartup(typeof(PlanetDotnet.Startup))]
 namespace PlanetDotnet
