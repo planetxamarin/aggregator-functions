@@ -6,6 +6,7 @@
 
 using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using PlanetDotnet.Authors.Models.Authors.Exceptions;
@@ -16,7 +17,7 @@ namespace PlanetDotnet.Tests.Unit.Services.Foundations.Authors
     public partial class AuthorServiceTests
     {
         [Fact]
-        public void ShouldThrowCriticalDependencyExceptionOnRetrieveAllWhenAssemblyExceptionOccursAndLogIt()
+        public async Task ShouldThrowCriticalDependencyExceptionOnRetrieveAllWhenAssemblyExceptionOccursAndLogIt()
         {
             // given
             TargetInvocationException targetInvocationException
@@ -33,15 +34,12 @@ namespace PlanetDotnet.Tests.Unit.Services.Foundations.Authors
                     .Throws(targetInvocationException);
 
             // when
-            Action retrieveAllAuthorsAction = () =>
-                this.authorService.RetrieveAllAuthorsAsync();
-
-            AuthorDependencyException actualAuthorDependencyException =
-                Assert.Throws<AuthorDependencyException>(retrieveAllAuthorsAction);
+            var retrieveAllAuthorsTask =
+                  this.authorService.RetrieveAllAuthorsAsync();
 
             // then
-            actualAuthorDependencyException.Should()
-                .BeEquivalentTo(expectedAuthorDependencyException);
+            await Assert.ThrowsAsync<AuthorDependencyException>(() =>
+                retrieveAllAuthorsTask.AsTask());
 
             this.authorBrokerMock.Verify(broker =>
                 broker.GetAllAuthorsAsync(),

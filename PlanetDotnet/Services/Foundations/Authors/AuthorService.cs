@@ -12,7 +12,7 @@ using PlanetDotnet.Brokers.Loggings;
 
 namespace PlanetDotnet.Services.Foundations.Authors
 {
-    public class AuthorService : IAuthorService
+    public partial class AuthorService : IAuthorService
     {
         private readonly IAuthorBroker authorBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -25,7 +25,7 @@ namespace PlanetDotnet.Services.Foundations.Authors
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<IEnumerable<Author>> RetrieveAllAuthorsAsync() =>
-            await this.authorBroker.GetAllAuthorsAsync();
+        public ValueTask<IEnumerable<Author>> RetrieveAllAuthorsAsync() =>
+            TryCatch(async ()=> await this.authorBroker.GetAllAuthorsAsync());
     }
 }
