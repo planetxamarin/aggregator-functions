@@ -24,15 +24,15 @@ namespace PlanetDotnet
         public override void Configure(IFunctionsHostBuilder builder)
         {
             builder.Services.AddLogging();
-            builder.Services.AddScoped<ILogger<LoggingBroker>, Logger<LoggingBroker>>();
-            builder.Services.AddScoped<ILoggingBroker, LoggingBroker>();
-            builder.Services.AddScoped<IDateTimeBroker, DateTimeBroker>();
-            builder.Services.AddScoped<ISerializationBroker, SerializationBroker>();
-            builder.Services.AddScoped<IStorageBroker, StorageBroker>();
-            builder.Services.AddScoped<IAuthorBroker, AuthorBroker>();
-            builder.Services.AddScoped<IFeedBroker, FeedBroker>();
-            builder.Services.AddScoped<IFeedService, FeedService>();
-            builder.Services.AddScoped<IFeedProcessingService, FeedProcessingService>();
+            builder.Services.AddSingleton<ILogger<LoggingBroker>, Logger<LoggingBroker>>();
+            builder.Services.AddSingleton<ILoggingBroker, LoggingBroker>();
+            builder.Services.AddSingleton<IDateTimeBroker, DateTimeBroker>();
+            builder.Services.AddSingleton<ISerializationBroker, SerializationBroker>();
+            builder.Services.AddSingleton<IStorageBroker, StorageBroker>();
+            builder.Services.AddSingleton<IAuthorBroker, AuthorBroker>();
+            builder.Services.AddSingleton<IFeedBroker, FeedBroker>();
+            builder.Services.AddSingleton<IFeedService, FeedService>();
+            builder.Services.AddSingleton<IFeedProcessingService, FeedProcessingService>();
         }
     }
 }

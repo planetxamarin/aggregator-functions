@@ -27,7 +27,7 @@ namespace PlanetDotnet.Services.Foundations.Feeds
     public class FeedService : IFeedService
     {
         private readonly HttpClient httpClient;
-        private readonly AsyncRetryPolicy _retryPolicy;
+        private readonly AsyncRetryPolicy retryPolicy;
         private readonly IAuthorBroker authorBroker;
         private readonly ILoggingBroker loggingBroker;
         private readonly IFeedBroker feedBroker;
@@ -38,25 +38,25 @@ namespace PlanetDotnet.Services.Foundations.Feeds
         private const string RssFeedImageUrlKey = "RssFeedImageUrl";
 
         public FeedService(
-            IAuthorBroker authorBroker,
-            ILoggingBroker loggingBroker,
+            HttpClient httpClient,
             IFeedBroker feedBroker,
-            HttpClient httpClient)
+            IAuthorBroker authorBroker,
+            ILoggingBroker loggingBroker)
         {
             this.httpClient = httpClient;
-            EnsureHttpClient();
-
-            _retryPolicy ??= Policy.Handle<FailedFeedException>()
-                .WaitAndRetryAsync(2, retry => TimeSpan.FromSeconds(retry * Math.Pow(1.2, retry)));
-
+            this.feedBroker = feedBroker;
             this.authorBroker = authorBroker;
             this.loggingBroker = loggingBroker;
-            this.feedBroker = feedBroker;
+
+            EnsureHttpClient();
+
+            this.retryPolicy ??= Policy.Handle<FailedFeedException>()
+                .WaitAndRetryAsync(2, retry => TimeSpan.FromSeconds(retry * Math.Pow(1.2, retry)));
         }
 
         public async Task<SyndicationFeed> LoadFeedAsync(int? numberOfItems, string languageCode = "mixed")
         {
-            var authors = await authorBroker.GetAllAuthorsAsync();
+            var authors = await this.authorBroker.GetAllAuthorsAsync();
 
             IEnumerable<Author> languageAuthors;
 
@@ -71,7 +71,7 @@ namespace PlanetDotnet.Services.Foundations.Feeds
 
             var feedTasks = languageAuthors.SelectMany(t => TryReadFeeds(t)).ToArray();
 
-            loggingBroker.LogInformation($"Loading feed for language: {languageCode} for {feedTasks.Length} authors");
+            this.loggingBroker.LogInformation($"Loading feed for language: {languageCode} for {feedTasks.Length} authors");
 
             var syndicationItems = await Task.WhenAll(feedTasks).ConfigureAwait(false);
 
@@ -89,7 +89,7 @@ namespace PlanetDotnet.Services.Foundations.Feeds
         {
             try
             {
-                return await _retryPolicy.ExecuteAsync(context => ReadFeed(feedUri), new Context(feedUri)).ConfigureAwait(false);
+                return await retryPolicy.ExecuteAsync(context => ReadFeed(feedUri), new Context(feedUri)).ConfigureAwait(false);
             }
             catch (FailedFeedException ex)
             {
@@ -199,12 +199,17 @@ namespace PlanetDotnet.Services.Foundations.Feeds
 
         private void EnsureHttpClient()
         {
-            httpClient.DefaultRequestHeaders.UserAgent.Add(
-                new ProductInfoHeaderValue("PlanetDotnet", $"{GetType().Assembly.GetName().Version}"));
+            this.httpClient.DefaultRequestHeaders.UserAgent.Add(
+                new ProductInfoHeaderValue(
+                    productName: "PlanetDotnet",
+                    productVersion: $"{GetType().Assembly.GetName().Version}"));
 
-            httpClient.Timeout = TimeSpan.FromSeconds(15);
+            this.httpClient.Timeout = TimeSpan.FromSeconds(15);
 
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
+            ServicePointManager.SecurityProtocol =
+                SecurityProtocolType.Tls13
+                | SecurityProtocolType.Tls12
+                | SecurityProtocolType.Tls11;
         }
     }
 }
