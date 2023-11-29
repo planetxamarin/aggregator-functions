@@ -5,7 +5,6 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Reflection;
 using System.Threading.Tasks;
 using Moq;
 using PlanetDotnet.Authors.Models.Authors.Exceptions;
@@ -47,6 +46,40 @@ namespace PlanetDotnet.Tests.Unit.Services.Foundations.Authors
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
                     expectedAuthorDependencyException))),
+                        Times.Once);
+
+            this.authorBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRetrieveAllIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            var serviceException = new Exception();
+
+            var expectedAuthorServiceException =
+                new AuthorServiceException(serviceException);
+
+            this.authorBrokerMock.Setup(broker =>
+                broker.GetAllAuthorsAsync())
+                    .ThrowsAsync(serviceException);
+
+            // when
+            var retrievedAuthorTask =
+                this.authorService.RetrieveAllAuthorsAsync();
+
+            // then
+            await Assert.ThrowsAsync<AuthorServiceException>(() =>
+                retrievedAuthorTask.AsTask());
+
+            this.authorBrokerMock.Verify(broker =>
+                broker.GetAllAuthorsAsync(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAuthorServiceException))),
                         Times.Once);
 
             this.authorBrokerMock.VerifyNoOtherCalls();
