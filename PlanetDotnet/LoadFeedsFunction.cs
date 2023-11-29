@@ -5,50 +5,37 @@
 // ---------------------------------------------------------------
 
 using System;
-using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-using PlanetDotnet.Brokers.Authors;
-using PlanetDotnet.Brokers.Serializations;
-using PlanetDotnet.Brokers.Storages;
-using PlanetDotnet.Services.Foundations.Feeds;
+using PlanetDotnet.Services.Processings.Feeds;
 
 namespace PlanetDotnet
 {
     public class LoadFeedsFunction
     {
-        
+        private readonly IFeedProcessingService feedProcessingService;
 
-        public LoadFeedsFunction(
-            IFeedService feedService,
-            IStorageBroker storageBroker,
-            IAuthorBroker authorBroker,
-            ISerializationBroker serializationBroker)
-        {
-            this.feedService = feedService;
-            this.storageBroker = storageBroker;
-            this.authorBroker = authorBroker;
-            this.serializationBroker = serializationBroker;
-        }
+        public LoadFeedsFunction(IFeedProcessingService feedProcessingService) =>
+            this.feedProcessingService = feedProcessingService;
 
         [FunctionName("LoadFeedsFunction")]
         public async Task Run(
             [TimerTrigger("0 0 */1 * * *", RunOnStartup = true)] TimerInfo myTimer,
             ILogger log)
         {
-            log.LogInformation($"Load feeds Timer trigger function executed at: {DateTime.Now}");
-
             try
             {
-                
+                log.LogInformation($"Load feeds Timer trigger function executed at: {DateTime.Now}");
+
+                await this.feedProcessingService.ProcessFeedLoadingAsync();
+
+                log.LogInformation($"Load feeds Finished at: {DateTime.Now}");
             }
             catch (Exception ex)
             {
-                log.LogError(ex, "error");
+                log.LogError(ex, "Loading feeds could'nt be processed.");
             }
-            log.LogInformation($"Load feeds Finished at: {DateTime.Now}");
         }
     }
 }
