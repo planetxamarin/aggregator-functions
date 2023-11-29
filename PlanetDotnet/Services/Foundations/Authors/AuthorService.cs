@@ -26,6 +26,6 @@ namespace PlanetDotnet.Services.Foundations.Authors
         }
 
         public ValueTask<IEnumerable<Author>> RetrieveAllAuthorsAsync() =>
-            TryCatch(async ()=> await this.authorBroker.GetAllAuthorsAsync());
+            TryCatch(async () => await this.authorBroker.GetAllAuthorsAsync());
     }
 }
