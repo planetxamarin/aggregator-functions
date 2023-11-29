@@ -6,8 +6,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using PlanetDotnet.Authors.Models.Authors;
 using PlanetDotnet.Authors.Models.Authors.Exceptions;
 
@@ -23,6 +25,69 @@ namespace PlanetDotnet.Services.Foundations.Authors
             {
                 return await returningAuthorsFunction();
             }
+            catch (ArgumentNullException argumentNullException)
+            {
+                var failedAuthorStorageException =
+                    new FailedAuthorStorageException(argumentNullException);
+
+                throw CreateAndLogDependencyException(failedAuthorStorageException);
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                var failedAuthorStorageException =
+                    new FailedAuthorStorageException(invalidOperationException);
+
+                throw CreateAndLogDependencyException(failedAuthorStorageException);
+            }
+            catch (AggregateException aggregateException)
+            {
+                var failedAuthorStorageException =
+                    new FailedAuthorStorageException(aggregateException);
+
+                throw CreateAndLogDependencyException(failedAuthorStorageException);
+            }
+            catch (OperationCanceledException operationCanceledException)
+            {
+                var failedAuthorStorageException =
+                    new FailedAuthorStorageException(operationCanceledException);
+
+                throw CreateAndLogDependencyException(failedAuthorStorageException);
+            }
+            catch (FileNotFoundException fileNotFoundException)
+            {
+                var failedAuthorStorageException =
+                    new FailedAuthorStorageException(fileNotFoundException);
+
+                throw CreateAndLogDependencyException(failedAuthorStorageException);
+            }
+            catch (DirectoryNotFoundException directoryNotFoundException)
+            {
+                var failedAuthorStorageException =
+                    new FailedAuthorStorageException(directoryNotFoundException);
+
+                throw CreateAndLogDependencyException(failedAuthorStorageException);
+            }
+            catch (IOException ioException)
+            {
+                var failedAuthorStorageException =
+                    new FailedAuthorStorageException(ioException);
+
+                throw CreateAndLogDependencyException(failedAuthorStorageException);
+            }
+            catch (JsonSerializationException jsonSerializationException)
+            {
+                var failedAuthorStorageException =
+                    new FailedAuthorStorageException(jsonSerializationException);
+
+                throw CreateAndLogDependencyException(failedAuthorStorageException);
+            }
+            catch (JsonReaderException jsonReaderException)
+            {
+                var failedAuthorStorageException =
+                    new FailedAuthorStorageException(jsonReaderException);
+
+                throw CreateAndLogDependencyException(failedAuthorStorageException);
+            }
             catch (TargetInvocationException targetInvocationException)
             {
                 var failedAuthorStorageException =
@@ -35,9 +100,9 @@ namespace PlanetDotnet.Services.Foundations.Authors
         private AuthorDependencyException CreateAndLogDependencyException(
             Exception exception)
         {
-            var authorDependencyException = 
+            var authorDependencyException =
                 new AuthorDependencyException(exception);
-            
+
             this.loggingBroker.LogCritical(authorDependencyException);
 
             return authorDependencyException;
