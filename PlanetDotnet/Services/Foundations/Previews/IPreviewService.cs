@@ -6,14 +6,12 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using PlanetDotnet.Authors.Models.Authors;
+using PlanetDotnet.Models.Previews;
 
-namespace PlanetDotnet.Services.Foundations.Authors
+namespace PlanetDotnet.Services.Foundations.Previews
 {
-    public interface IAuthorService
+    public interface IPreviewService
     {
-        ValueTask<IEnumerable<Author>> RetrieveAllAuthorsAsync();
-
-        string GetGravatarImage(Author member);
+        ValueTask<IEnumerable<Preview>> RetrieveAllPreviewsAsync(string language);
     }
 }

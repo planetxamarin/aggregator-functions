@@ -10,11 +10,13 @@ using Microsoft.Extensions.Logging;
 using PlanetDotnet.Brokers.Authors;
 using PlanetDotnet.Brokers.DateTimes;
 using PlanetDotnet.Brokers.Feeds;
+using PlanetDotnet.Brokers.Hashes;
 using PlanetDotnet.Brokers.Loggings;
 using PlanetDotnet.Brokers.Serializations;
 using PlanetDotnet.Brokers.Storages;
 using PlanetDotnet.Services.Foundations.Authors;
 using PlanetDotnet.Services.Foundations.Feeds;
+using PlanetDotnet.Services.Foundations.Previews;
 using PlanetDotnet.Services.Processings.Feeds;
 
 [assembly: FunctionsStartup(typeof(PlanetDotnet.Startup))]
@@ -32,8 +34,10 @@ namespace PlanetDotnet
             builder.Services.AddSingleton<IStorageBroker, StorageBroker>();
             builder.Services.AddSingleton<IAuthorBroker, AuthorBroker>();
             builder.Services.AddSingleton<IFeedBroker, FeedBroker>();
+            builder.Services.AddSingleton<IHashBroker, HashBroker>();
             builder.Services.AddSingleton<IFeedService, FeedService>();
             builder.Services.AddSingleton<IAuthorService, AuthorService>();
+            builder.Services.AddSingleton<IPreviewService, PreviewService>();
             builder.Services.AddSingleton<IFeedProcessingService, FeedProcessingService>();
         }
     }
