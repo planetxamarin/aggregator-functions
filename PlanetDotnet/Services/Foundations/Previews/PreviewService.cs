@@ -110,10 +110,15 @@ namespace PlanetDotnet.Services.Foundations.Previews
 
                 if (host.Contains("medium.com"))
                 {
-                    if (itemUrl.Segments.Count() >= 3)
+                    if (itemUrl.Segments.Length >= 3)
                     {
-                        var mediumId = itemUrl.Segments[1].Trim('/');
-                        return mediumAuthors.Any(fba => fba.AbsoluteUri.Contains(mediumId));
+                        var maybeMediumId1 = itemUrl.Segments?[1]?.Trim('/') ?? string.Empty;
+                        return mediumAuthors.Any(fba => fba.AbsoluteUri.Contains(maybeMediumId1));
+                    }
+                    else if (itemUrl.Host?.Split('.')?[0] != null)
+                    {
+                        var maybeMediumId2 = itemUrl.Host?.Split('.')?[0] ?? string.Empty;
+                        return mediumAuthors.Any(fba => fba.AbsoluteUri.Contains(maybeMediumId2));
                     }
                 }
 
@@ -121,7 +126,7 @@ namespace PlanetDotnet.Services.Foundations.Previews
                 {
                     // url will look like:
                     // feedproxy.google.com/~r/<feedburnerId>/~3/bgJNuDXwkU0/O
-                    if (itemUrl.Segments.Count() >= 5)
+                    if (itemUrl.Segments.Length >= 5)
                     {
                         var feedBurnerId = itemUrl.Segments[2].Trim('/');
                         return feedBurnerAuthors.Any(fba => fba.AbsoluteUri.Contains(feedBurnerId));
