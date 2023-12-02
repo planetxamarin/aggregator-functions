@@ -14,6 +14,7 @@ using Moq;
 using Newtonsoft.Json;
 using PlanetDotnet.Authors.Models.Authors;
 using PlanetDotnet.Brokers.Authors;
+using PlanetDotnet.Brokers.Hashes;
 using PlanetDotnet.Brokers.Loggings;
 using PlanetDotnet.Services.Foundations.Authors;
 using Tynamix.ObjectFiller;
@@ -25,16 +26,19 @@ namespace PlanetDotnet.Tests.Unit.Services.Foundations.Authors
     {
         private readonly Mock<IAuthorBroker> authorBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
+        private readonly Mock<IHashBroker> hashBrokerMock;
         private readonly IAuthorService authorService;
 
         public AuthorServiceTests()
         {
             this.authorBrokerMock = new Mock<IAuthorBroker>();
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
+            this.hashBrokerMock = new Mock<IHashBroker>();
 
             this.authorService = new AuthorService(
                 authorBroker: this.authorBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object);
+                loggingBroker: this.loggingBrokerMock.Object,
+                hashBroker: this.hashBrokerMock.Object);
         }
 
         private static IEnumerable<Author> CreateRandomAuthors() =>

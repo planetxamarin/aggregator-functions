@@ -11,18 +11,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using PlanetDotnet.Brokers.Loggings;
-using PlanetDotnet.Services.Foundations.Previews;
+using PlanetDotnet.Services.Processings.Previews;
 
 namespace PlanetDotnet.Functions
 {
     public class PreviewFunctions
     {
         private readonly ILoggingBroker loggingBroker;
-        private readonly IPreviewService previewService;
+        private readonly IPreviewProcessingService previewService;
 
         public PreviewFunctions(
             ILoggingBroker loggingBroker,
-            IPreviewService previewService)
+            IPreviewProcessingService previewService)
         {
             this.loggingBroker = loggingBroker;
             this.previewService = previewService;
@@ -30,13 +30,13 @@ namespace PlanetDotnet.Functions
 
         [FunctionName("GetAllPreviews")]
         public async Task<IActionResult> GetAllPreviewsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "previews")] HttpRequest req)
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "previews/{language}")] HttpRequest req, string language = "en")
         {
             try
             {
                 this.loggingBroker.LogInformation("Started loading preview items.");
 
-                var previews = await this.previewService.RetrieveAllPreviewsAsync("en");
+                var previews = await this.previewService.RetrieveAllPreviewsAsync(language);
 
                 this.loggingBroker.LogInformation("Finished loading preview items.");
                 return new OkObjectResult(previews);

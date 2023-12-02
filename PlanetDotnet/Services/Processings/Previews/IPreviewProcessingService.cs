@@ -8,9 +8,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using PlanetDotnet.Models.Previews;
 
-namespace PlanetDotnet.Services.Foundations.Previews
+namespace PlanetDotnet.Services.Processings.Previews
 {
-    public interface IPreviewService
+    public interface IPreviewProcessingService
     {
         ValueTask<IEnumerable<Preview>> RetrieveAllPreviewsAsync(string language);
     }

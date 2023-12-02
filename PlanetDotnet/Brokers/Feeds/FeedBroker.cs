@@ -4,6 +4,7 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
+using System.IO;
 using System.Net.Http;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
@@ -32,6 +33,13 @@ namespace PlanetDotnet.Brokers.Feeds
             var feed = SyndicationFeed.Load(reader);
 
             return feed;
+        }
+
+        public SyndicationFeed ReadFeedFromStream(Stream content)
+        {
+            using XmlReader reader = XmlReader.Create(content);
+
+            return SyndicationFeed.Load(reader);
         }
     }
 }

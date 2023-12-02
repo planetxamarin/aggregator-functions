@@ -13,24 +13,28 @@ using System.Threading.Tasks;
 using System.Xml;
 using Humanizer;
 using PlanetDotnet.Authors.Models.Authors;
+using PlanetDotnet.Brokers.Feeds;
 using PlanetDotnet.Brokers.Storages;
 using PlanetDotnet.Extensions;
 using PlanetDotnet.Models.Previews;
 using PlanetDotnet.Services.Foundations.Authors;
 
-namespace PlanetDotnet.Services.Foundations.Previews
+namespace PlanetDotnet.Services.Processings.Previews
 {
-    public partial class PreviewService : IPreviewService
+    public partial class PreviewProcessingService : IPreviewProcessingService
     {
         private readonly IStorageBroker storageBroker;
+        private readonly IFeedBroker feedBroker;
         private readonly IAuthorService authorService;
         private const int MaxLength = 400;
 
-        public PreviewService(
+        public PreviewProcessingService(
             IStorageBroker storageBroker,
+            IFeedBroker feedBroker,
             IAuthorService authorService)
         {
             this.storageBroker = storageBroker;
+            this.feedBroker = feedBroker;
             this.authorService = authorService;
         }
 
@@ -40,9 +44,7 @@ namespace PlanetDotnet.Services.Foundations.Previews
 
             var stream = await this.storageBroker.ReadBlobAsync(language);
 
-            using XmlReader reader = XmlReader.Create(stream);
-
-            var feed = SyndicationFeed.Load(reader);
+            var feed = this.feedBroker.ReadFeedFromStream(stream);
 
             return MapToPreviewList(feed, authors);
         }
@@ -83,7 +85,7 @@ namespace PlanetDotnet.Services.Foundations.Previews
                 var link = item.Links.FirstOrDefault()?.Uri.ToString() ?? string.Empty;
                 var html = item.Content?.ToHtml() ?? item.Summary?.ToHtml() ?? string.Empty;
 
-                var gravatar = this.authorService.GetGravatarImage(author);
+                var gravatar = authorService.GetGravatarImage(author);
 
                 yield return new Preview
                 {
@@ -169,7 +171,7 @@ namespace PlanetDotnet.Services.Foundations.Previews
             if (string.IsNullOrEmpty(htmlContent)) return htmlContent;
 
             // Strip out any HTML content.
-            var strippedContent = Regex.Replace(htmlContent, @"<[^>]*>", String.Empty);
+            var strippedContent = Regex.Replace(htmlContent, @"<[^>]*>", string.Empty);
             return strippedContent;
         }
 

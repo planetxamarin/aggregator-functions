@@ -16,8 +16,8 @@ using PlanetDotnet.Brokers.Serializations;
 using PlanetDotnet.Brokers.Storages;
 using PlanetDotnet.Services.Foundations.Authors;
 using PlanetDotnet.Services.Foundations.Feeds;
-using PlanetDotnet.Services.Foundations.Previews;
 using PlanetDotnet.Services.Processings.Feeds;
+using PlanetDotnet.Services.Processings.Previews;
 
 [assembly: FunctionsStartup(typeof(PlanetDotnet.Startup))]
 namespace PlanetDotnet
@@ -37,7 +37,7 @@ namespace PlanetDotnet
             builder.Services.AddSingleton<IHashBroker, HashBroker>();
             builder.Services.AddSingleton<IFeedService, FeedService>();
             builder.Services.AddSingleton<IAuthorService, AuthorService>();
-            builder.Services.AddSingleton<IPreviewService, PreviewService>();
+            builder.Services.AddSingleton<IPreviewProcessingService, PreviewProcessingService>();
             builder.Services.AddSingleton<IFeedProcessingService, FeedProcessingService>();
         }
     }
