@@ -4,6 +4,8 @@
 // See License.txt in the project root for license information.
 // ---------------------------------------------------------------
 
+using System;
+
 namespace PlanetDotnet.Models.Previews
 {
     public class Preview
@@ -13,6 +15,6 @@ namespace PlanetDotnet.Models.Previews
         public string Title { get; set; }
         public string Link { get; set; }
         public string Body { get; set; }
-        public string PublishDate { get; set; }
+        public DateTimeOffset PublishDate { get; set; }
     }
 }

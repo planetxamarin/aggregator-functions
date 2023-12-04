@@ -11,7 +11,6 @@ using System.ServiceModel.Syndication;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
-using Humanizer;
 using PlanetDotnet.Authors.Models.Authors;
 using PlanetDotnet.Brokers.Feeds;
 using PlanetDotnet.Brokers.Storages;
@@ -52,7 +51,7 @@ namespace PlanetDotnet.Services.Processings.Previews
         private IEnumerable<Preview> MapToPreviewList(
             SyndicationFeed feed,
             IEnumerable<Author> authors)
-        {
+        { 
             foreach (var item in feed.Items)
             {
                 var author = authors.FirstOrDefault(author =>
@@ -94,7 +93,7 @@ namespace PlanetDotnet.Services.Processings.Previews
                     Title = item.Title.Text,
                     Link = link,
                     Body = Sanitize(html),
-                    PublishDate = item.PublishDate.Humanize()
+                    PublishDate = item.PublishDate
                 };
             }
         }

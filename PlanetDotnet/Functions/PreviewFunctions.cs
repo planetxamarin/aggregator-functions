@@ -30,10 +30,16 @@ namespace PlanetDotnet.Functions
 
         [FunctionName("GetAllPreviews")]
         public async Task<IActionResult> GetAllPreviewsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "previews/{language}")] HttpRequest req, string language = "en")
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "previews")] HttpRequest req)
         {
             try
             {
+                string language = req.Query["language"];
+                if (string.IsNullOrEmpty(language))
+                {
+                    language = "en";
+                }
+
                 this.loggingBroker.LogInformation("Started loading preview items.");
 
                 var previews = await this.previewService.RetrieveAllPreviewsAsync(language);
