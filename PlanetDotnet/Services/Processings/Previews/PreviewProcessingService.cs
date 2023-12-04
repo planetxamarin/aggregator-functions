@@ -51,7 +51,7 @@ namespace PlanetDotnet.Services.Processings.Previews
         private IEnumerable<Preview> MapToPreviewList(
             SyndicationFeed feed,
             IEnumerable<Author> authors)
-        { 
+        {
             foreach (var item in feed.Items)
             {
                 var author = authors.FirstOrDefault(author =>
